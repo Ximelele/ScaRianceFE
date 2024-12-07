@@ -8,14 +8,12 @@ import Chart from 'chart.js/auto'
 
 const props = defineProps({
   patient_data: {},
-  plot_type : String,
-  orientation : String,
-  title : String,
+  plot_type: String,
+  orientation: String,
+  title: String
 })
-// Refs for the two chart canvases
 const chartCanvas1 = ref<HTMLCanvasElement | null>(null)
 Chart.overrides.polarArea.plugins.legend.display = false
-// Function to create a Polar Area Chart
 const localPatient = ref(null)
 const createChart = (canvas: HTMLCanvasElement | null, dataP: any) => {
   if (canvas) {
@@ -51,7 +49,7 @@ const createChart = (canvas: HTMLCanvasElement | null, dataP: any) => {
               'rgba(50, 205, 50, 0.5)',
               'rgba(255, 140, 0, 0.5)',
               'rgba(128, 128, 0, 0.5)'
-            ],
+            ]
           }
         ]
       },

@@ -6,8 +6,9 @@
 import { ref, watch } from 'vue'
 import Chart from 'chart.js/auto'
 // import { Chart, LinearScale, CategoryScale } from 'chart.js';
-import { BoxPlotController, BoxAndWiskers } from '@sgratzl/chartjs-chart-boxplot';
-import { CategoryScale ,LinearScale} from 'chart.js'
+import { BoxAndWiskers, BoxPlotController } from '@sgratzl/chartjs-chart-boxplot'
+import { CategoryScale, LinearScale } from 'chart.js'
+
 const props = defineProps({
   patient_data: {},
   plot_data: String
@@ -15,7 +16,7 @@ const props = defineProps({
 // Refs for the two chart canvases
 const chartCanvas1 = ref<HTMLCanvasElement | null>(null)
 Chart.overrides.polarArea.plugins.legend.display = false
-Chart.register(BoxPlotController, BoxAndWiskers, LinearScale, CategoryScale);
+Chart.register(BoxPlotController, BoxAndWiskers, LinearScale, CategoryScale)
 // Function to create a Polar Area Chart
 const localPatient = ref(null)
 const createChart = (canvas: HTMLCanvasElement | null, dataP: any) => {
@@ -29,12 +30,13 @@ const createChart = (canvas: HTMLCanvasElement | null, dataP: any) => {
             label: 'BoxPlot of mutations',
             data: dataP.data,
             padding: 0,
-            itemRadius:7,
-            outlierColor:'#000000',
+            itemRadius: 7,
+            outlierColor: '#000000',
             backgroundColor: [
+              'rgba(75, 192, 192, 0.5)',
               'rgba(255, 205, 86, 0.5)',
               'rgba(255, 99, 132, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
+
               'rgba(54, 162, 235, 0.5)',
               'rgba(201, 203, 207, 0.5)',
               'rgba(153, 102, 255, 0.5)',
@@ -57,23 +59,22 @@ const createChart = (canvas: HTMLCanvasElement | null, dataP: any) => {
               'rgba(255, 140, 0, 0.5)',
               'rgba(128, 128, 0, 0.5)'
             ]
-
           }
         ]
       },
       options: {
         aspectRatio: 1,
         responsive: true,
-        // plugins: {
-        //   legend: {
-        //     display: true,
-        //     position: 'left'
-        //   },
-        //   title: {
-        //     display: true,
-        //     text: 'Mutation per chromosome'
-        //   }
-        // }
+        plugins: {
+          legend: {
+            display: false,
+            position: 'left'
+          },
+          title: {
+            display: true,
+            text: dataP.title
+          }
+        }
       }
     })
   }
@@ -84,7 +85,8 @@ watch(
   (newVal) => {
     if (newVal !== null) {
       localPatient.value = newVal
-      createChart(chartCanvas1.value, localPatient.value.patient_data[props.plot_data])
+      console.log(localPatient.value)
+      createChart(chartCanvas1.value, localPatient.value)
     }
   },
   { immediate: true } // Optional: Trigger the watcher immediately on component mount

@@ -9,10 +9,8 @@ import Chart from 'chart.js/auto'
 const props = defineProps({
   patient_data: {}
 })
-// Refs for the two chart canvases
 const chartCanvas1 = ref<HTMLCanvasElement | null>(null)
 Chart.overrides.polarArea.plugins.legend.display = false
-// Function to create a Polar Area Chart
 const localPatient = ref(null)
 const createChart = (canvas: HTMLCanvasElement | null, dataP: any) => {
   if (canvas) {
@@ -24,10 +22,7 @@ const createChart = (canvas: HTMLCanvasElement | null, dataP: any) => {
           {
             label: 'Dataset 1',
             data: dataP.data,
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(75, 192, 192)',
-            ],
+            backgroundColor: ['rgb(255, 99, 132)', 'rgb(75, 192, 192)'],
             hoverOffset: 6
           }
         ]
@@ -42,7 +37,7 @@ const createChart = (canvas: HTMLCanvasElement | null, dataP: any) => {
           },
           title: {
             display: true,
-            text: 'Mutation per chromosome'
+            text: dataP.title
           }
         }
       }
@@ -55,10 +50,10 @@ watch(
   (newVal) => {
     if (newVal !== null) {
       localPatient.value = newVal
-      createChart(chartCanvas1.value, localPatient.value.patient_data.Donut)
+      createChart(chartCanvas1.value, localPatient.value)
     }
   },
-  { immediate: true } // Optional: Trigger the watcher immediately on component mount
+  { immediate: true }
 )
 </script>
 

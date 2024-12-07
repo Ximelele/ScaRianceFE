@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { fetchPatientAnnotData, fetchPatientData } from '@/api/plotData';
+import { fetchPatientAnnotData, fetchPatientSingleBox } from '@/api/plotData';
 
 const patient = ref(null);
 const patientAnnot = ref(null);
@@ -57,9 +57,9 @@ const redirectToNextPage = (page: string, key: string) => {
 
 // Lifecycle hooks
 onMounted(() => {
-  fetchData('strvctre', fetchPatientData);
+  fetchData('strvctre', fetchPatientSingleBox);
   fetchData('annotsv', fetchPatientAnnotData);
-  startRetryInterval('strvctre', fetchPatientData);
+  startRetryInterval('strvctre', fetchPatientSingleBox);
   startRetryInterval('annotsv', fetchPatientAnnotData);
 });
 
@@ -80,7 +80,7 @@ onUnmounted(() => {
               <v-btn
                 v-if="loading.strvctre"
                 color="secondary"
-                @click.prevent="fetchData('strvctre', fetchPatientData)"
+                @click.prevent="fetchData('strvctre', fetchPatientSingleBox)"
               >
                 <v-progress-circular class="mr-2" color="white" indeterminate size="20" />
               </v-btn>
