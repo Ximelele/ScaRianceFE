@@ -79,7 +79,6 @@ const prevImage = (category: string) => {
 const tableData = ref([])
 const tableColumns = ref([])
 const tableLoading = ref(true)
-const tableError = ref(null)
 
 // Pagination state from backend
 const pagination = ref({
@@ -96,10 +95,6 @@ const tableOptions = ref({
   sortBy: [],
 })
 
-// Watch for changes in table options to request new data
-watch(tableOptions, (newOptions) => {
-  fetchTableData(newOptions.page, newOptions.itemsPerPage)
-}, { deep: true })
 
 // Function to fetch table data from API with pagination
 const fetchTableData = async () => {
@@ -108,11 +103,10 @@ const fetchTableData = async () => {
   try {
     // Update API call to include pagination parameters
     const result = await fetchCopyNumberData( );
-    tableColumns.value = result.columns;
-    tableData.value = result.data;
+    tableColumns.value = result.columns as any;
+    tableData.value = result.data as any;
 
   } catch (error) {
-    tableError.value = 'Failed to load data';
     console.error(error);
   } finally {
     tableLoading.value = false;
@@ -125,7 +119,7 @@ onMounted(async () => {
   try {
     const [imagesResult] = await Promise.all([
       fetchImages(),
-      fetchTableData(1, 10) // Initial load with first page, 10 items per page
+      fetchTableData() // Initial load with first page, 10 items per page
     ])
     images.value = imagesResult
 
@@ -310,7 +304,7 @@ const activeView = ref('images') // 'images' or 'table'
       <!-- Vuetify Data Table -->
       <div>
         <v-data-table
-          :headers="headers"
+          :headers="headers as any"
           :items="tableData"
           class="elevation-1"
         >
